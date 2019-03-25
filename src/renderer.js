@@ -171,7 +171,7 @@ class Markdown {
 
   constructor(options = {}) {
     this.rules = [...(options.rules || []), ...RULES];
-
+    this.disableEscaping = options.disableEscaping;
     this.serializeNode = this.serializeNode.bind(this);
     this.serializeLeaves = this.serializeLeaves.bind(this);
     this.serializeString = this.serializeString.bind(this);
@@ -214,7 +214,7 @@ class Markdown {
       return leaves.map(leave => {
         const inCodeMark = !!leave.marks.filter(mark => mark.type === "code")
           .size;
-        return this.serializeLeaves(leave, !inCodeBlock && !inCodeMark);
+        return this.serializeLeaves(leave, !inCodeBlock && !inCodeMark && !this.disableEscaping);
       });
     }
 
